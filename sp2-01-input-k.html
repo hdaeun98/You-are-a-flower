@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>You are a flower.</title>
+    <link rel="stylesheet" href="sp2-01-style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" sizes="16x16">
+    <script defer src="node_modules/swup/dist/swup.min.js"></script>
+    <style>
+        body{
+            margin: 0;
+        }
+        canvas{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <audio autoplay="" src="./assets/flower_pt1.mp3"></audio>
+    <div class="container">
+     
+      <div class="ftext1">A loving person</div> 
+
+    <a href="sp2-01-input.html">
+      <input type="buttonk" value="ENG">
+      </a>
+
+      <a href="sp2-01-input-k.html">
+        <input type="buttonk" value="한국어">
+        </a>
+
+        <figure class="about-me__picture--mask">
+          <img id="randomf" class="randomf">
+        </figure>
+        
+      </div>
+
+    <div class="center">
+      <br>
+        <h1>Take some time to think, and then insert below.
+          <br>
+          잠시 생각하는 시간을 가져본 후 입력해주세요.
+        </h1>
+
+        <form action="" id="user-form">
+
+            <div class="inputBox">
+                <input type="text" id="user-name" required/>
+                <span></span>
+                <label>당신의 이름의 뜻은?</label>
+            </div>
+
+            <div class="inputBox">
+                <input type="text" id="user-person" required/>
+                <span></span>
+                <label>어떤 사람이 되고 싶나요?</label>
+            </div>
+
+            <div class="inputBox">
+                <input type="text" id ="user-keyword" required/>
+                <span></span>
+                <label>당신을 설명하는 한 개의 키워드는?</label>
+            </div>
+
+              <button id="button" type="button" onclick='window.location.replace("./sp2-loadingpage.html")'>Save</button> 
+            
+        </form> 
+    </div>
+
+    
+    <canvas> </canvas>
+     
+     <script>
+     window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+
+onload = function (){
+  setTimeout(init,0)
+}
+
+init = function(){
+  canvas = document.querySelector('canvas')
+  ctx = canvas.getContext('2d')
+
+  onresize = function(){
+    canvas.width = canvas.clientWidth
+    canvas.height = canvas.clientHeight
+  }
+  onresize()
+
+  mouse = {x:canvas.width/2,y:canvas.height/2,out:false}
+
+  canvas.onmouseout = function(){
+    mouse.out = true
+  }
+
+  canvas.onmousemove = function(e){
+    var rect = canvas.getBoundingClientRect()
+    mouse = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      out: false
+    }
+  }
+
+  gravityStrength = 10
+  particles = []
+  spawnTimer = 0
+  spawnInterval = 30
+  type = 0
+  requestAnimationFrame(startLoop)
+}
+
+newParticle = function(){
+  type = type?0:1
+  particles.push({
+    x:mouse.x,
+    y:mouse.y,
+    xv:type?18*Math.random()-9:24*Math.random()-12,
+    yv:type?18*Math.random()-9:24*Math.random()-12,
+    /*
+    252, 235, 255
+    231, 255, 255
+    231, 255, 231
+    255, 255, 231
+    */
+    c:type?'rgb('+((Math.random()*255)|200)+','+((Math.random()*255)|190)+','+((Math.random()*255)|190)+')':'rgb(231,231,231)',
+    s:type?5+7*Math.random():1,
+    a:1
+  })
+}
+
+startLoop = function(newTime){
+  time = newTime
+  requestAnimationFrame(loop)
+}
+
+loop = function(newTime){
+  draw()
+  calculate(newTime)
+  requestAnimationFrame(loop)
+}
+
+draw = function(){
+  ctx.clearRect(0,0,canvas.width,canvas.height)
+  for(var i=0;i<particles.length;i++){
+    var p = particles[i]
+    ctx.globalAlpha = p.a
+    ctx.fillStyle = p.c
+    ctx.beginPath()
+    ctx.arc(p.x,p.y,p.s,0,2*Math.PI)
+    ctx.fill()
+  }
+}
+
+calculate = function(newTime){
+  var dt = newTime-time
+  time = newTime
+
+  if(!mouse.out){
+    spawnTimer += (dt<100)?dt:200
+    for(;spawnTimer>0;spawnTimer-=spawnInterval){
+      newParticle()
+    }
+  }
+
+  particleOverflow = particles.length-900
+  if(particleOverflow>0){
+    particles.splice(0,particleOverflow)
+  }
+
+  for(var i=0;i<particles.length;i++){
+    var p = particles[i]
+    if(!mouse.out){
+      x = mouse.x-p.x
+      y = mouse.y-p.y
+      a = x*x+y*y
+      a = a>100?gravityStrength/a:gravityStrength/100
+      p.xv = (p.xv+a*x)*0.99
+      p.yv = (p.yv+a*y)*0.99
+    }
+    p.x += p.xv
+    p.y += p.yv
+    p.a *= 0.99
+  }
+}
+     
+     
+     </script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    
+    //flower images-----------------------
+    var flowers = new Array();
+    
+    flowers[0] = new Image();
+    flowers[0].src = './flowers/01.png';
+    flowers[1] = new Image();
+    flowers[1].src = './flowers/02.png';
+    flowers[2] = new Image();
+    flowers[2].src = './flowers/03.png';
+    flowers[3] = new Image();
+    flowers[3].src = './flowers/04.png';
+    flowers[4] = new Image();
+    flowers[4].src = './flowers/05.png';
+    flowers[5] = new Image();
+    flowers[5].src = './flowers/06.png';
+    flowers[6] = new Image();
+    flowers[6].src = './flowers/07.png';
+    flowers[7] = new Image();
+    flowers[7].src = './flowers/08.png';
+    flowers[8] = new Image();
+    flowers[8].src = './flowers/09.png';
+    flowers[9] = new Image();
+    flowers[9].src = './flowers/10.png';
+    flowers[10] = new Image();
+    flowers[10].src = './flowers/11.png';
+    flowers[11] = new Image();
+    flowers[11].src = './flowers/12.png';
+    flowers[12] = new Image();
+    flowers[12].src = './flowers/13.png';
+    flowers[13] = new Image();
+    flowers[13].src = './flowers/14.png';
+    flowers[14] = new Image();
+    flowers[14].src = './flowers/15.png';
+    flowers[15] = new Image();
+    flowers[15].src = './flowers/16.png';
+    flowers[16] = new Image();
+    flowers[16].src = './flowers/17.png';
+    flowers[17] = new Image();
+    flowers[17].src = './flowers/18.png';
+    flowers[18] = new Image();
+    flowers[18].src = './flowers/19.png';
+    flowers[19] = new Image();
+    flowers[19].src = './flowers/20.png';
+    flowers[20] = new Image();
+    flowers[20].src = './flowers/21.png';
+    flowers[21] = new Image();
+    flowers[21].src = './flowers/22.png';
+    flowers[22] = new Image();
+    flowers[22].src = './flowers/23.png';
+    flowers[23] = new Image();
+    flowers[23].src = './flowers/24.png';
+    flowers[24] = new Image();
+    flowers[24].src = './flowers/25.png';
+    flowers[25] = new Image();
+    flowers[25].src = './flowers/26.png';
+    flowers[26] = new Image();
+    flowers[26].src = './flowers/27.png';
+    flowers[27] = new Image();
+    flowers[27].src = './flowers/28.png';
+    flowers[28] = new Image();
+    flowers[28].src = './flowers/29.png';
+    flowers[29] = new Image();
+    flowers[29].src = './flowers/30.png';
+    flowers[30] = new Image();
+    flowers[30].src = './flowers/31.png';
+    flowers[31] = new Image();
+    flowers[31].src = './flowers/32.png';
+    flowers[32] = new Image();
+    flowers[32].src = './flowers/33.png';
+    flowers[33] = new Image();
+    flowers[33].src = './flowers/34.png';
+    flowers[34] = new Image();
+    flowers[34].src = './flowers/35.png';
+    flowers[35] = new Image();
+    flowers[35].src = './flowers/36.png';
+    flowers[36] = new Image();
+    flowers[36].src = './flowers/37.png';
+    flowers[37] = new Image();
+    flowers[37].src = './flowers/38.png';
+    flowers[38] = new Image();
+    flowers[38].src = './flowers/39.png';
+    flowers[39] = new Image();
+    flowers[39].src = './flowers/40.png';
+    flowers[40] = new Image();
+    flowers[40].src = './flowers/41.png';
+    flowers[41] = new Image();
+    flowers[41].src = './flowers/42.png';
+    flowers[42] = new Image();
+    flowers[42].src = './flowers/43.png';
+    flowers[43] = new Image();
+    flowers[43].src = './flowers/44.png';
+    flowers[44] = new Image();
+    flowers[44].src = './flowers/45.png';
+    flowers[45] = new Image();
+    flowers[45].src = './flowers/46.png';
+    flowers[46] = new Image();
+    flowers[46].src = './flowers/47.png';
+    flowers[47] = new Image();
+    flowers[47].src = './flowers/48.png';
+    flowers[48] = new Image();
+    flowers[48].src = './flowers/49.png';
+    flowers[49] = new Image();
+    flowers[49].src = './flowers/50.png';
+    flowers[50] = new Image();
+    flowers[50].src = './flowers/51.png';
+    flowers[51] = new Image();
+    flowers[51].src = './flowers/52.png';
+    flowers[52] = new Image();
+    flowers[52].src = './flowers/53.png';
+    flowers[53] = new Image();
+    flowers[53].src = './flowers/54.png';
+    flowers[54] = new Image();
+    flowers[54].src = './flowers/55.png';
+    flowers[55] = new Image();
+    flowers[55].src = './flowers/56.png';
+    flowers[56] = new Image();
+    flowers[56].src = './flowers/57.png';
+    flowers[57] = new Image();
+    flowers[57].src = './flowers/58.png';
+    flowers[58] = new Image();
+    flowers[58].src = './flowers/59.png';
+    flowers[59] = new Image();
+    flowers[59].src = './flowers/60.png';
+    flowers[60] = new Image();
+    flowers[60].src = './flowers/61.png';
+    flowers[61] = new Image();
+    flowers[61].src = './flowers/62.png';
+    flowers[62] = new Image();
+    flowers[62].src = './flowers/63.png';
+    flowers[63] = new Image();
+    flowers[63].src = './flowers/64.png';
+    flowers[64] = new Image();
+    flowers[64].src = './flowers/65.png';
+    flowers[65] = new Image();
+    flowers[65].src = './flowers/66.png';
+    flowers[66] = new Image();
+    flowers[66].src = './flowers/67.png';
+    flowers[67] = new Image();
+    flowers[67].src = './flowers/68.png';
+    flowers[68] = new Image();
+    flowers[68].src = './flowers/69.png';
+    flowers[69] = new Image();
+    flowers[69].src = './flowers/70.png';
+    flowers[70] = new Image();
+    flowers[70].src = './flowers/71.png';
+    flowers[71] = new Image();
+    flowers[71].src = './flowers/72.png';
+    flowers[72] = new Image();
+    flowers[72].src = './flowers/73.png';
+    flowers[73] = new Image();
+    flowers[73].src = './flowers/74.png';
+    flowers[74] = new Image();
+    flowers[74].src = './flowers/75.png';
+    flowers[75] = new Image();
+    flowers[75].src = './flowers/76.png';
+    flowers[76] = new Image();
+    flowers[76].src = './flowers/77.png';
+    flowers[77] = new Image();
+    flowers[77].src = './flowers/78.png';
+    flowers[78] = new Image();
+    flowers[78].src = './flowers/79.png';
+    flowers[79] = new Image();
+    flowers[79].src = './flowers/80.png';
+    flowers[80] = new Image();
+    flowers[80].src = './flowers/81.png';
+    flowers[81] = new Image();
+    flowers[81].src = './flowers/82.png';
+    flowers[82] = new Image();
+    flowers[82].src = './flowers/83.png';
+    flowers[83] = new Image();
+    flowers[83].src = './flowers/84.png';
+    flowers[84] = new Image();
+    flowers[84].src = './flowers/85.png';
+    flowers[85] = new Image();
+    flowers[85].src = './flowers/86.png';
+    flowers[86] = new Image();
+    flowers[86].src = './flowers/87.png';
+    flowers[87] = new Image();
+    flowers[87].src = './flowers/88.png';
+    flowers[88] = new Image();
+    flowers[88].src = './flowers/89.png';
+    flowers[89] = new Image();
+    flowers[89].src = './flowers/90.png';
+    flowers[90] = new Image();
+    flowers[90].src = './flowers/91.png';
+    flowers[91] = new Image();
+    flowers[91].src = './flowers/92.png';
+    flowers[92] = new Image();
+    flowers[92].src = './flowers/93.png';
+    flowers[93] = new Image();
+    flowers[93].src = './flowers/94.png';
+    flowers[94] = new Image();
+    flowers[94].src = './flowers/95.png';
+    flowers[95] = new Image();
+    flowers[95].src = './flowers/96.png';
+    flowers[96] = new Image();
+    flowers[96].src = './flowers/97.png';
+    flowers[97] = new Image();
+    flowers[97].src = './flowers/98.png';
+    flowers[98] = new Image();
+    flowers[98].src = './flowers/99.png';
+    flowers[99] = new Image();
+    flowers[99].src = './flowers/100.png';
+    flowers[100] = new Image();
+    flowers[100].src = './flowers/101.png';
+    flowers[101] = new Image();
+    flowers[101].src = './flowers/102.png';
+    flowers[102] = new Image();
+    flowers[102].src = './flowers/103.png';
+
+
+    function imgRandom(arr) {
+      var rannum = Math.floor(Math.random() * arr.length);
+      return arr[rannum];
+    }
+
+   // var randomImage = imgRandom(arr); //Create the image
+    //document.getElementById('randomf').appendChild(randomImage);
+
+    document.getElementById("randomf").src = imgRandom(flowers).src;
+   // console.log(imgRandom(flowers));
+
+    </script>
+
+<video autoplay loop muted class = "vid">
+  <source src="./videos/bgnd.mp4" type="video/mp4">
+</video>
+
+<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";></script>
+<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script type ="module" src="./index.js"></script>
+</body>
+</html>

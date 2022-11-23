@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>You are a flower.</title>
+    <link rel="stylesheet" href="sp2-01-style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" sizes="16x16">
+    <script defer src="node_modules/swup/dist/swup.min.js"></script>
+    <title>Flower is blooming...</title>
+</head>
+<body>
+    <audio autoplay="" src="./assets/flower_transition.mp3"></audio>
+
+    <div class="center2">
+        <br>
+          <h1>꽃이 피어나는 중입니다...
+          </h1>
+
+              <a href="sp2-02-ranflo-k.html">
+              <button id="button2" class="b2">나의 꽃 만나기</button>
+              </a>
+
+              <script>
+                document.getElementById("button2").style.display = "none";
+        
+                function showStuff() {
+                    document.getElementById("button2").style.display = "inline";
+                }
+        
+                function myFunction() {
+                    window.location = "sp2-loadingpage-k.html"
+                }
+        
+                setTimeout(showStuff, 7000);
+            </script>
+  
+          </form> 
+      </div>
+
+
+    <video autoplay loop muted>
+        <source src="./videos/sprout.mp4" type="video/mp4">
+      </video>
+</body>
+</html>

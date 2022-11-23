@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Quicksand&display=swap');*{
+    font-family: 'Gowun Dodum', sans-serif;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background: #606060;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.center{
+    position: absolute;
+    width: 300px;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    align-items: center;
+}
+
+
+.container{
+    padding: 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left; 
+    
+}
+
+.about-me__picture--mask {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    margin-left: -50px;
+}
+
+.randomf{
+    margin-top: 50px;
+    width: 100%;
+}
+
+.center h1{
+    text-align: center;
+    font-size: 20px;
+    padding-top: 100px;
+    color: rgb(255, 255, 255);
+}
+
+.random_bg{
+    height: 500px;
+    width: 100%;
+    position: absolute;
+}
+
+input[type="button"]{
+    position: relative;
+    width: auto;
+    height: 50px;
+    border: 1px solid;
+    background: rgba(255, 255, 255, 0.617);
+    border-radius: 25px;
+    font-size: 18px;
+    color: #070707e2;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    color: #baa4a4e2;
+    margin-left: 33%;
+}
+input[type="button"]:hover{
+    border-color: white;
+    background: rgba(255, 255, 255, 0.941);
+    transition: .5s;
+    font-size: 18px;
+    color: rgb(46, 46, 46)
+}
+
+.os-phrases h2,
+.os-phrases h2>span{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.os-phrase h2 > span {
+    margin: 0 15px;
+}
+
+.os-phrase h2 > span > span{
+    display: inline-block;
+    perspective: 1000px;
+    transform-origin: 50% 50%;
+}
+
+.os-phrases h2 > span > span{
+    display: inline-block;
+    color: hsla(0,0%,0%,0);
+    transform-style: preserve-3d;
+    transform: translate3d(0,0,0);
+    animation: OpeningSequence 5.2s linear forwards; 
+}
+
+.os-phrases h2:nth-child(2) > span > span > span{
+    animation-delay: 5s;
+}
+
+.os-phrases h2:nth-child(3) > span > span > span{
+    animation-delay: 10s;
+    animation: fadeIn 4s linear 20s fowards;
+}
+
+@keyframes OpeningSequence{
+    0%{
+        text-shadow: 0 0 10px white;
+        opacity: 0.2;
+    }
+
+    50%{
+        text-shadow: 0 0 1px white;
+        opacity: 0.8;
+    }
+
+    85%{
+        text-shadow: 0 0 1px white;
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+        text-shadow: 0 0 10px white;
+    }
+
+    100%{
+        opacity: 0.8;
+        text-shadow: 0 0 1px white;
+    }
+}
+
+
+.vid{
+    z-index: 3;
+}
